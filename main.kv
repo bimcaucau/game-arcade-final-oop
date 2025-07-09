@@ -1,0 +1,141 @@
+# Game_Arcade/main.kv (FINAL VERSION with Help Screens)
+
+#:kivy 1.11.1
+
+<MasterMenuScreen>:
+    # When this screen is entered, ensure the menu music is playing
+    on_enter: app.play_menu_music()
+    
+    canvas.before:
+        Rectangle:
+            source: 'assets/master_menu.png'
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '20dp'
+        padding: ('50dp', '120dp')
+        
+        Label:
+            text: "2 Player Games for 2 People"
+            font_size: '48sp'
+            color: (1, 0.84, 0, 1) # Gold
+            size_hint_y: 0.4
+
+        Button:
+            text: "Start"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.root.current = 'game_select'
+
+        # NEW Help Button
+        Button:
+            text: "Help"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.root.current = 'help_select'
+
+        Button:
+            text: "Exit"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.stop()
+
+
+<GameSelectScreen>:
+    on_enter: app.play_menu_music()
+    
+    canvas.before:
+        Rectangle:
+            source: 'assets/master_menu.png'
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '30dp'
+        padding: ('100dp', '100dp')
+
+        Label:
+            text: "Select a Game"
+            font_size: '48sp'
+            color: (1, 0.84, 0, 1)
+            size_hint_y: 0.3
+        
+        Button:
+            text: "Tank Shooter"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.root.current = 'tank_game_screen'
+
+        Button:
+            text: "Ping Pong Game"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.root.current = 'pingpong_screen' 
+            
+        Button:
+            text: "Back"
+            font_size: '24sp'
+            size_hint_y: 0.15
+            background_color: (0.7, 0.2, 0.2, 1)
+            on_release: app.root.current = 'master_menu'
+
+# --- NEW KV RULES FOR HELP SCREENS ---
+
+<HelpSelectScreen>:
+    on_enter: app.play_menu_music()
+    
+    canvas.before:
+        Rectangle:
+            source: 'assets/master_menu.png'
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '30dp'
+        padding: ('100dp', '100dp')
+
+        Label:
+            text: "Select a Game for Help"
+            font_size: '42sp' # Slightly smaller
+            color: (1, 0.84, 0, 1)
+            size_hint_y: 0.3
+        
+        Button:
+            text: "Tank Shooter"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            # This now calls our new Python function
+            on_release: app.show_help_for('tank')
+
+        Button:
+            text: "Ping Pong Game"
+            font_size: '32sp'
+            size_hint_y: 0.2
+            on_release: app.show_help_for('pong')
+            
+        Button:
+            text: "Back"
+            font_size: '24sp'
+            size_hint_y: 0.15
+            background_color: (0.7, 0.2, 0.2, 1)
+            on_release: app.root.current = 'master_menu'
+
+
+<HelpDisplayScreen>:
+    FloatLayout:
+        # Display the help image, using the 'image_source' property we defined
+        Image:
+            source: root.image_source
+            allow_stretch: True
+            keep_ratio: True
+            size_hint: 1, 0.9
+            pos_hint: {'center_x': 0.5, 'top': 1}
+        
+        # A back button to return to the help selection menu
+        Button:
+            text: "Back"
+            size_hint: 0.8, 0.08
+            pos_hint: {'center_x': 0.5, 'y': 0.02}
+            font_size: '24sp'
+            on_release: app.root.current = 'help_select'
